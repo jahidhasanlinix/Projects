@@ -146,3 +146,15 @@ ORDER BY (ASC  or DESC feature sorting)
 
 -- SELECT * FROM Employees
 -- ORDER BY 4 DESC, 5 DESC
+
+-- Case Statement
+SELECT FirstName, LastName, JobTitle, Salary,
+CASE
+	WHEN JobTitle = 'CFO' THEN Salary + (Salary * .10)
+	WHEN JobTitle = 'Accountant' THEN Salary + (Salary * .05)
+	WHEN JobTitle = 'HR' THEN Salary + (Salary * .000001)
+	ELSE Salary + (Salary * .03)
+END AS SalaryAfterRaise
+FROM SQLBasics.dbo.Employees
+JOIN SQLBasics.dbo.EmployeeSalary
+	ON Employees.EmployeeID = EmployeeSalary.EmployeeID
