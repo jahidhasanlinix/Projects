@@ -1,0 +1,33 @@
+## Calculating descriptive statistics for monthly revenue by product- business problem
+- How much revenue does each product usually generate each month?
+- Which product had the most success throughout all of last year?
+- Did either product fluctuate greatly each month or was the month-2-month trend fairly consistent?
+- Calculate min, max, avg, std dev, sum
+
+
+with monthly_rev as (
+select 
+    date_trunc('month',s.ORDERDATE) as MonthlyOrders,
+    p.productname, 
+    sum(s.revenue) as RevenueSum
+from 
+    subscriptions s
+join 
+    products p
+on s.PRODUCTID = p.PRODUCTID
+where 
+    s.ORDERDATE between '2022-01-01' and '2022-12-31'
+group by 
+    date_trunc('month',s.ORDERDATE),p.productname
+)
+
+select 
+    productname,
+    min(revenue) as min_rev,
+    max(revenue) as max_rev,
+    avg(revenue) as avg_rev,
+    stddev(revenue) as std_dev_rev
+from 
+    monthly_rev
+group by 
+    productname;
